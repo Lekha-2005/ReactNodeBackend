@@ -10,15 +10,24 @@ const port=3241;
 
 app.get("/", (req, res) => {
     res.send("Backend is running successfully 👋");
-  });
-  
+});
 
-app.use(
-    cors({
-    origin:"http://localhost:5173",
-    methods:["GET","POST","PATCH","DELETE"],
-    })
-);
+
+const allowedOrigins = [
+    "http://localhost:5173",
+    "https://crudapplicationreactnode.netlify.app"
+];
+  
+app.use(cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    }
+  }));
+  
 
 
 //display all user
